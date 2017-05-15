@@ -5,14 +5,21 @@ package eu.rubengrab.model;
  */
 
 public class User {
+    private int id;
     private String username;
     private String password;
     private String token;
+
+    public User(int id, String username, String password) {
+        this(username, password);
+        setId(id);
+    }
 
     public User(String username, String password) {
         setUsername(username);
         setPassword(password);
         setToken("");
+        setId(-1);
     }
 
     public User() {
@@ -25,6 +32,14 @@ public class User {
         setUsername(user.getUsername());
         setPassword(user.getPassword());
         setToken(user.getToken());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

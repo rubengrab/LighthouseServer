@@ -1,7 +1,7 @@
 package eu.rubengrab.services;
 
-import eu.rubengrab.model.SmartLockBundle;
-import eu.rubengrab.model.SmartLockHouseDescription;
+import eu.rubengrab.model.SmartLockSecurityBundle;
+import eu.rubengrab.model.SmartLockDescriptionBundle;
 import eu.rubengrab.model.User;
 import eu.rubengrab.repositories.SmartLockRepository;
 import eu.rubengrab.utils.Encrypter;
@@ -14,6 +14,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Ruben on 11.05.2017.
@@ -25,7 +26,7 @@ public class SmartLockService {
     private SmartLockRepository smartLockRepository;
 
 
-    public SmartLockBundle getEncryptedUnlockKey(User user, Long major, Long minor, String uuid) {
+    public SmartLockSecurityBundle getEncryptedUnlockKey(User user, Long major, Long minor, String uuid) {
 
         String unlockCode = smartLockRepository.getUnlockCode(major, minor, uuid);
         String pepper = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
@@ -38,10 +39,18 @@ public class SmartLockService {
         } catch (IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | InvalidKeyException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return new SmartLockBundle(cypherText, address);
+        return new SmartLockSecurityBundle(cypherText, address);
     }
 
-    public SmartLockHouseDescription getSmartLockDescription(Long major, Long minor, String uuid) {
+    public SmartLockDescriptionBundle getSmartLockDescription(Long major, Long minor, String uuid) {
         return smartLockRepository.getDescription(major,minor,uuid);
+    }
+
+    public List<SmartLockDescriptionBundle> getSmartLockDescriptions() {
+        return smartLockRepository.getDescriptions();
+    }
+
+    public List<SmartLockDescriptionBundle> getSmartLockDescriptions(User userForToken) {
+        return smartLockRepository.getDescriptions(userForToken);
     }
 }

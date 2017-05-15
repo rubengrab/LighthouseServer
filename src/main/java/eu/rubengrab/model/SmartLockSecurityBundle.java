@@ -3,11 +3,11 @@ package eu.rubengrab.model;
 /**
  * Created by Ruben on 11.05.2017.
  */
-public class SmartLockBundle {
+public class SmartLockSecurityBundle {
     private final String cypherText;
     private final String address;
 
-    public SmartLockBundle(String cypherText, String address) {
+    public SmartLockSecurityBundle(String cypherText, String address) {
         this.cypherText = cypherText;
         this.address = address;
     }

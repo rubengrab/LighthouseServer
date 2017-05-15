@@ -19,8 +19,8 @@ public class UserService {
     public User login(User user) {
         User userByUsername = userRepository.getByUsername(user.getUsername());
         if (userByUsername != null && userByUsername.getPassword().equals(user.getPassword())) {
-            String generatedToken = sessionService.generateTokenForUser(user);
-            user.setToken(generatedToken);
+//            String generatedToken = sessionService.generateTokenForUser(user);
+            user.setToken(userByUsername.getUsername());
             return user;
         } else {
             return null;
@@ -28,19 +28,24 @@ public class UserService {
     }
 
     public Boolean logout(User user) {
-        String token = user.getToken();
-        if (token == null) {
-            return Boolean.FALSE;
-        }
-        User userForToken = sessionService.getUserForToken(token);
-        if (user.getUsername().equals(userForToken.getUsername())) {
-            sessionService.removeTokenForUser(user);
-            return Boolean.TRUE;
-        }
-        return Boolean.FALSE;
+//        String token = user.getToken();
+//        if (token == null) {
+//            return Boolean.FALSE;
+//        }
+//        User userForToken = sessionService.getUserForToken(token);
+//        if (user.getUsername().equals(userForToken.getUsername())) {
+//            sessionService.removeTokenForUser(user);
+//            return Boolean.TRUE;
+//        }
+//        return Boolean.FALSE;
+        return Boolean.TRUE;
     }
 
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public User getUserByUsername(String userTokenUSERNAME) {
+        return userRepository.getByUsername(userTokenUSERNAME);
     }
 }
