@@ -42,14 +42,16 @@ public class SmartLockController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description")//gets all
     List<SmartLockDescriptionBundle> getSmartLockDescriptionBundles(@PathVariable String userTokenUSERNAME) {
-        return getSmartLockService().getSmartLockDescriptions();
+        User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
+        return getSmartLockService().getAllSmartLockDescriptions(userForToken);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/smartLock/userDescription") //gets user's
     List<SmartLockDescriptionBundle> getSmartLockDescriptionBundlesByUser(@PathVariable String userTokenUSERNAME) {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
-        return getSmartLockService().getSmartLockDescriptions(userForToken);
+        return getSmartLockService().getUserSmartLockDescriptions(userForToken);
     }
+
 
 
 

@@ -6,9 +6,7 @@ import eu.rubengrab.model.User;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Ruben on 11.05.2017.
@@ -43,7 +41,7 @@ public class SmartLockRepository {
     }
 
     public SmartLockDescriptionBundle getDescription(Long major, Long minor, String uuid) {
-        SmartLockDescriptionBundle smartLockDescriptionBundle = new SmartLockDescriptionBundle();
+        SmartLockDescriptionBundle smartLockDescriptionBundle = new SmartLockDescriptionBundle.Builder().build();
 
         String query = "SELECT id, address, name FROM houses WHERE beacon_major LIKE ? AND beacon_minor LIKE ? AND beacon_uuid LIKE ?;";
 
@@ -61,7 +59,12 @@ public class SmartLockRepository {
             int id = resultSet.getInt(1);
             String address = resultSet.getString(2);
             String name = resultSet.getString(3);
-            return new SmartLockDescriptionBundle(id, name, address);
+
+            return new SmartLockDescriptionBundle.Builder()
+                    .id(id)
+                    .name(name)
+                    .address(address)
+                    .build();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,10 +72,10 @@ public class SmartLockRepository {
         return smartLockDescriptionBundle;
     }
 
-    public List<SmartLockDescriptionBundle> getDescriptions(User userForToken) {
+    public List<SmartLockDescriptionBundle> getUserDescriptions(User userForToken) {
         List<SmartLockDescriptionBundle> smartLockDescriptionBundleList = new ArrayList<>();
 
-        String query = "SELECT h.id, h.address, h.name , h.beacon_major, h.beaocn_minor, h.beaocn_uuid " +
+        String query = "SELECT h.id, h.address, h.name , h.beacon_major, h.beacon_minor, h.beacon_uuid " +
                 "FROM users AS u " +
                 "INNER JOIN user_house AS uh " +
                 "   ON u.id = uh.id_user " +
@@ -94,7 +97,15 @@ public class SmartLockRepository {
                 String major = resultSet.getString(4);
                 String minor = resultSet.getString(5);
                 String uuid = resultSet.getString(6);
-                smartLockDescriptionBundleList.add(new SmartLockDescriptionBundle(id, name, address, new Beacon(major, minor, uuid)));
+                smartLockDescriptionBundleList.add(
+                        new SmartLockDescriptionBundle.Builder()
+                                .id(id)
+                                .name(name)
+                                .address(address)
+                                .beacon(new Beacon(major, minor, uuid))
+                                .isMine(true)
+                                .isBooked(true)
+                                .build());
             }
 
         } catch (SQLException e) {
@@ -103,11 +114,13 @@ public class SmartLockRepository {
         return smartLockDescriptionBundleList;
     }
 
-    public List<SmartLockDescriptionBundle> getDescriptions() {
+    public List<SmartLockDescriptionBundle> getAllDescriptions(User userForToken) {
+
+        Set<SmartLockDescriptionBundle> smartLockDescriptionBundleSet = new HashSet<>(getUserDescriptions(userForToken));
+
         List<SmartLockDescriptionBundle> smartLockDescriptionBundleList = new ArrayList<>();
 
         String query = "SELECT id, address, name FROM houses";
-
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
 
@@ -117,12 +130,16 @@ public class SmartLockRepository {
                 int id = resultSet.getInt(1);
                 String address = resultSet.getString(2);
                 String name = resultSet.getString(3);
-                smartLockDescriptionBundleList.add(new SmartLockDescriptionBundle(id, name, address));
+                smartLockDescriptionBundleSet.add(new SmartLockDescriptionBundle.Builder()
+                        .id(id)
+                        .name(name)
+                        .address(address)
+                        .build());
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return smartLockDescriptionBundleList;
+        return new ArrayList<>(smartLockDescriptionBundleSet);
     }
 }

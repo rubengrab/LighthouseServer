@@ -46,11 +46,11 @@ public class SmartLockService {
         return smartLockRepository.getDescription(major,minor,uuid);
     }
 
-    public List<SmartLockDescriptionBundle> getSmartLockDescriptions() {
-        return smartLockRepository.getDescriptions();
+    public List<SmartLockDescriptionBundle> getAllSmartLockDescriptions(User userForToken) {
+        return smartLockRepository.getAllDescriptions(userForToken);
     }
 
-    public List<SmartLockDescriptionBundle> getSmartLockDescriptions(User userForToken) {
-        return smartLockRepository.getDescriptions(userForToken);
+    public List<SmartLockDescriptionBundle> getUserSmartLockDescriptions(User userForToken) {
+        return smartLockRepository.getUserDescriptions(userForToken);
     }
 }
