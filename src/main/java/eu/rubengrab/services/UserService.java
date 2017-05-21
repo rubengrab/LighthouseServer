@@ -20,8 +20,8 @@ public class UserService {
         User userByUsername = userRepository.getByUsername(user.getUsername());
         if (userByUsername != null && userByUsername.getPassword().equals(user.getPassword())) {
 //            String generatedToken = sessionService.generateTokenForUser(user);
-            user.setToken(userByUsername.getUsername());
-            return user;
+            userByUsername.setToken(userByUsername.getUsername());
+            return userByUsername;
         } else {
             return null;
         }

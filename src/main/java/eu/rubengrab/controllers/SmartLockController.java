@@ -35,31 +35,32 @@ public class SmartLockController {
         return getSmartLockService().getEncryptedUnlockKey(userForToken, major, minor, uuid);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description/{major}/{minor}/{uuid}")
-    SmartLockDescriptionBundle getSmartLockDescriptionBundle(@PathVariable String userToken, @PathVariable Long major, @PathVariable Long minor, @PathVariable String uuid) {
-        return getSmartLockService().getSmartLockDescription(major, minor, uuid);
+    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description/{smartLockId}")
+    SmartLockDescriptionBundle getSmartLockDescriptionBundle(@PathVariable String userTokenUSERNAME, @PathVariable String smartLockId) {
+        User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
+        return getSmartLockService().getSmartLockDescription(userForToken, smartLockId);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description")//gets all
+    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description")
+//gets all
     List<SmartLockDescriptionBundle> getSmartLockDescriptionBundles(@PathVariable String userTokenUSERNAME) {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
         return getSmartLockService().getAllSmartLockDescriptions(userForToken);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/userDescription") //gets user's
+    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/userDescription")
+        //gets user's
     List<SmartLockDescriptionBundle> getSmartLockDescriptionBundlesByUser(@PathVariable String userTokenUSERNAME) {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
         return getSmartLockService().getUserSmartLockDescriptions(userForToken);
     }
 
-
-
-
-
-
-
-
-
+    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/userHistoryDescription")
+        //gets user's
+    List<SmartLockDescriptionBundle> getSmartLockDescriptionBundlesHystoryByUser(@PathVariable String userTokenUSERNAME) {
+        User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
+        return getSmartLockService().getUserHistorySmartLockDescriptions(userForToken);
+    }
 
 
     public UserService getUserService() {

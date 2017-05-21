@@ -1,5 +1,8 @@
 package eu.rubengrab.model;
 
+
+import java.sql.Date;
+
 /**
  * Created by Ruben on 12.05.2017.
  */
@@ -8,17 +11,27 @@ public class SmartLockDescriptionBundle {
     private String name;
     private String address;
     private Beacon beacon;
-    private Boolean isMine;
-    private Boolean isBooked;
+    private boolean isMine;
+    private boolean isBooked;
+    private Location location;
+    private Double pricePerNight;
+    private String facilities;
+    private Date date_start;
+    private Date date_end;
 
 
-    private SmartLockDescriptionBundle(int id, String name, String address, Beacon beacon, Boolean isMine, Boolean isBooked) {
+    private SmartLockDescriptionBundle(int id, String name, String address, Beacon beacon, boolean isMine, boolean isBooked, Location location, Double pricePerNight, String facilities, Date date_start, Date date_end) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.beacon = beacon;
         this.isMine = isMine;
         this.isBooked = isBooked;
+        this.location = location;
+        this.pricePerNight = pricePerNight;
+        this.facilities = facilities;
+        this.date_start = date_start;
+        this.date_end = date_end;
     }
 
     public static class Builder {
@@ -26,8 +39,13 @@ public class SmartLockDescriptionBundle {
         private String name;
         private String address;
         private Beacon beacon;
-        private Boolean isMine;
-        private Boolean isBooked;
+        private boolean isMine;
+        private boolean isBooked;
+        private Location location;
+        private Double pricePerNight;
+        private String facilities;
+        private Date date_start;
+        private Date date_end;
 
         public Builder() {
         }
@@ -62,8 +80,34 @@ public class SmartLockDescriptionBundle {
             return this;
         }
 
+        public Builder location(final Location location) {
+            this.location = location;
+            return this;
+        }
+
+        public Builder pricePerNight(final Double pricePerNight) {
+            this.pricePerNight = pricePerNight;
+            return this;
+        }
+
+        public Builder facilities(final String facilities) {
+            this.facilities = facilities;
+            return this;
+        }
+
+        public Builder dateStart(final Date date_start) {
+            this.date_start = date_start;
+            return this;
+        }
+
+        public Builder dateEnd(final Date date_end) {
+            this.date_end = date_end;
+            return this;
+        }
+
+
         public SmartLockDescriptionBundle build() {
-            return new SmartLockDescriptionBundle(id, name, address, beacon, isMine, isBooked);
+            return new SmartLockDescriptionBundle(id, name, address, beacon, isMine, isBooked, location, pricePerNight, facilities, date_start, date_end);
         }
     }
 
@@ -84,19 +128,59 @@ public class SmartLockDescriptionBundle {
         return other.getId() == this.getId();
     }
 
-    public Boolean getMine() {
+    public Date getDate_start() {
+        return date_start;
+    }
+
+    public void setDate_start(Date date_start) {
+        this.date_start = date_start;
+    }
+
+    public Date getDate_end() {
+        return date_end;
+    }
+
+    public void setDate_end(Date date_end) {
+        this.date_end = date_end;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Double getPricePerNight() {
+        return pricePerNight;
+    }
+
+    public void setPricePerNight(Double pricePerNight) {
+        this.pricePerNight = pricePerNight;
+    }
+
+    public String getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(String facilities) {
+        this.facilities = facilities;
+    }
+
+    public boolean getIsMine() {
         return isMine;
     }
 
-    public void setMine(Boolean mine) {
+    public void setIsMine(boolean mine) {
         isMine = mine;
     }
 
-    public Boolean getBooked() {
+    public boolean getIsBooked() {
         return isBooked;
     }
 
-    public void setBooked(Boolean booked) {
+    public void setIsBooked(boolean booked) {
         isBooked = booked;
     }
 

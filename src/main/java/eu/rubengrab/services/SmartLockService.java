@@ -33,7 +33,7 @@ public class SmartLockService {
 
         String plainText = unlockCode + pepper;
         String cypherText = "";
-        String address = smartLockRepository.getAddress(major, minor, uuid);
+        String address = smartLockRepository.getMacAddress(major, minor, uuid);
         try {
             cypherText = Encrypter.bytesToHex(Encrypter.encrypt(plainText));
         } catch (IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | InvalidKeyException | NoSuchAlgorithmException e) {
@@ -42,15 +42,19 @@ public class SmartLockService {
         return new SmartLockSecurityBundle(cypherText, address);
     }
 
-    public SmartLockDescriptionBundle getSmartLockDescription(Long major, Long minor, String uuid) {
-        return smartLockRepository.getDescription(major,minor,uuid);
-    }
-
     public List<SmartLockDescriptionBundle> getAllSmartLockDescriptions(User userForToken) {
         return smartLockRepository.getAllDescriptions(userForToken);
     }
 
     public List<SmartLockDescriptionBundle> getUserSmartLockDescriptions(User userForToken) {
         return smartLockRepository.getUserDescriptions(userForToken);
+    }
+
+    public SmartLockDescriptionBundle getSmartLockDescription(User user, String smartLockId) {
+        return smartLockRepository.getDescription(user, smartLockId);
+    }
+
+    public List<SmartLockDescriptionBundle> getUserHistorySmartLockDescriptions(User userForToken) {
+        return smartLockRepository.getUserHistoryDescriptions(userForToken);
     }
 }
