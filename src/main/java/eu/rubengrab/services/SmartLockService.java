@@ -28,12 +28,12 @@ public class SmartLockService {
 
     public SmartLockSecurityBundle getEncryptedUnlockKey(User user, Long major, Long minor, String uuid) {
 
-        String unlockCode = smartLockRepository.getUnlockCode(major, minor, uuid);
+        String unlockCode = smartLockRepository.getUnlockCode(user,major, minor, uuid);
         String pepper = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
 
         String plainText = unlockCode + pepper;
         String cypherText = "";
-        String address = smartLockRepository.getMacAddress(major, minor, uuid);
+        String address = smartLockRepository.getMacAddress(user,major, minor, uuid);
         try {
             cypherText = Encrypter.bytesToHex(Encrypter.encrypt(plainText));
         } catch (IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | InvalidKeyException | NoSuchAlgorithmException e) {
@@ -46,15 +46,19 @@ public class SmartLockService {
         return smartLockRepository.getAllDescriptions(userForToken);
     }
 
-    public List<SmartLockDescriptionBundle> getUserSmartLockDescriptions(User userForToken) {
-        return smartLockRepository.getUserDescriptions(userForToken);
-    }
-
     public SmartLockDescriptionBundle getSmartLockDescription(User user, String smartLockId) {
         return smartLockRepository.getDescription(user, smartLockId);
     }
 
-    public List<SmartLockDescriptionBundle> getUserHistorySmartLockDescriptions(User userForToken) {
-        return smartLockRepository.getUserHistoryDescriptions(userForToken);
+    public List<SmartLockDescriptionBundle> getPastBookingHistory(User userForToken) {
+        return smartLockRepository.getPastBookingByUser(userForToken);
+    }
+
+    public List<SmartLockDescriptionBundle> getActiveBookingByUser(User userForToken) {
+        return smartLockRepository.getActiveBookingsByUser(userForToken);
+    }
+
+    public List<SmartLockDescriptionBundle> getFutureBookingByUser(User userForToken) {
+        return smartLockRepository.getFutureBookingByUser(userForToken);
     }
 }

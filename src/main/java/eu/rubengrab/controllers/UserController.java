@@ -43,6 +43,12 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ResponseEntity<User> saveChanges(@RequestBody User user) {
+        User save = getUserService().save(user);
+        return new ResponseEntity<User>(save, HttpStatus.OK);
+    }
+
     private UserService getUserService() {
         return userService;
     }

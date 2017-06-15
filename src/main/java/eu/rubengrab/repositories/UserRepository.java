@@ -26,7 +26,7 @@ public class UserRepository {
     public User getByUsername(String userName) {
         User user = new User();
 
-        String query = "SELECT id, username, password FROM users WHERE username LIKE ?;";
+        String query = "SELECT id, username, password, firstName, lastName, email, creditcard FROM users WHERE username LIKE ?;";
 
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
@@ -38,7 +38,11 @@ public class UserRepository {
                 int id = resultSet.getInt(1);
                 String username = resultSet.getString(2);
                 String password = resultSet.getString(3);
-                return new User(id, username, password);
+                String firstName = resultSet.getString(4);
+                String lastName = resultSet.getString(5);
+                String email = resultSet.getString(6);
+                String creditCard = resultSet.getString(7);
+                return new User(id, username, password, firstName, lastName, email, creditCard);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,4 +50,22 @@ public class UserRepository {
         return user;
     }
 
+    public User updateUser(User user) {
+        String query = "UPDATE users SET firstName = ?, lastName = ?, email = ?, creditcard = ? WHERE id =?;";
+
+        try {
+            PreparedStatement preparedStmt = connection.prepareStatement(query);
+            preparedStmt.setString(1, user.getFirstName());
+            preparedStmt.setString(2, user.getLastName());
+            preparedStmt.setString(3, user.getEmail());
+            preparedStmt.setString(4, user.getCreditCard());
+            preparedStmt.setInt(5, user.getId());
+
+            preparedStmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }

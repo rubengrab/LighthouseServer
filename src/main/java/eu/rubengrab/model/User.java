@@ -3,9 +3,12 @@ package eu.rubengrab.model;
 /**
  * Created by Ruben on 11.05.2017.
  */
-
 public class User {
     private int id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String creditCard;
     private String username;
     private String password;
     private String token;
@@ -32,6 +35,48 @@ public class User {
         setUsername(user.getUsername());
         setPassword(user.getPassword());
         setToken(user.getToken());
+    }
+
+    public User(int id, String username, String password, String firstName, String lastName, String email, String creditCard) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.creditCard = creditCard;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(String creditCard) {
+        this.creditCard = creditCard;
     }
 
     public int getId() {

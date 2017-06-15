@@ -48,4 +48,8 @@ public class UserService {
     public User getUserByUsername(String userTokenUSERNAME) {
         return userRepository.getByUsername(userTokenUSERNAME);
     }
+
+    public User save(User user) {
+        return userRepository.updateUser(user);
+    }
 }

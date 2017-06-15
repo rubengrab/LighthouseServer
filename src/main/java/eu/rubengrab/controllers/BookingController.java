@@ -27,10 +27,10 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/book/{smartLockDescriptionBundleId}/{mFromDateTime}/{mToDateTime}")
+    @RequestMapping(method = RequestMethod.GET, value = "/checkBooking/{smartLockDescriptionBundleId}/{mFromDateTime}/{mToDateTime}")
     Boolean checkAvailability(@PathVariable String userTokenUSERNAME, @PathVariable int smartLockDescriptionBundleId, @PathVariable long mFromDateTime, @PathVariable long mToDateTime) {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
-        return getBookingService().checkAvailability(userForToken, smartLockDescriptionBundleId,mFromDateTime,mToDateTime);
+        return getBookingService().checkAvailability(userForToken, smartLockDescriptionBundleId, mFromDateTime, mToDateTime);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/bookNow/{smartLockDescriptionBundleId}/{mFromDateTime}/{mToDateTime}")
@@ -39,6 +39,7 @@ public class BookingController {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
         return getBookingService().bookNow(userForToken, smartLockDescriptionBundleId, mFromDateTime, mToDateTime);
     }
+
 
     public BookingService getBookingService() {
         return bookingService;

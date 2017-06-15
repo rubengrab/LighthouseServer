@@ -30,7 +30,6 @@ public class SmartLockController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/smartLock/security/{major}/{minor}/{uuid}")
     SmartLockSecurityBundle getSmartLockSecurityBundle(@PathVariable String userTokenUSERNAME, @PathVariable Long major, @PathVariable Long minor, @PathVariable String uuid) {
-//        User userForToken = getSessionService().getUserForToken(userTokenUSERNAME);
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
         return getSmartLockService().getEncryptedUnlockKey(userForToken, major, minor, uuid);
     }
@@ -42,28 +41,35 @@ public class SmartLockController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description")
-//gets all
     List<SmartLockDescriptionBundle> getSmartLockDescriptionBundles(@PathVariable String userTokenUSERNAME) {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
         return getSmartLockService().getAllSmartLockDescriptions(userForToken);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/userDescription")
-        //gets user's
-    List<SmartLockDescriptionBundle> getSmartLockDescriptionBundlesByUser(@PathVariable String userTokenUSERNAME) {
+    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description/history")
+    List<SmartLockDescriptionBundle> getPastBookingByUser(@PathVariable String userTokenUSERNAME) {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
-        return getSmartLockService().getUserSmartLockDescriptions(userForToken);
+        return getSmartLockService().getPastBookingHistory(userForToken);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/userHistoryDescription")
-        //gets user's
-    List<SmartLockDescriptionBundle> getSmartLockDescriptionBundlesHystoryByUser(@PathVariable String userTokenUSERNAME) {
+    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description/active")
+    List<SmartLockDescriptionBundle> getActiveBookingByUser(@PathVariable String userTokenUSERNAME) {
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
-        return getSmartLockService().getUserHistorySmartLockDescriptions(userForToken);
+        return getSmartLockService().getActiveBookingByUser(userForToken);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/smartLock/description/future")
+    List<SmartLockDescriptionBundle> getFutureBookingByUser(@PathVariable String userTokenUSERNAME) {
+        User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
+        return getSmartLockService().getFutureBookingByUser(userForToken);
     }
 
 
-    public UserService getUserService() {
+
+
+
+
+    private UserService getUserService() {
         return userService;
     }
 

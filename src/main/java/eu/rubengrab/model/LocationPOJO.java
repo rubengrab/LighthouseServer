@@ -3,11 +3,11 @@ package eu.rubengrab.model;
 /**
  * Created by Ruben on 17.05.2017.
  */
-public class Location {
+public class LocationPOJO {
     private String latitude;
     private String longitude;
 
-    public Location(String latitude, String longitude) {
+    public LocationPOJO(String latitude, String longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

@@ -2,6 +2,7 @@ package eu.rubengrab.model;
 
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by Ruben on 12.05.2017.
@@ -13,14 +14,16 @@ public class SmartLockDescriptionBundle {
     private Beacon beacon;
     private boolean isMine;
     private boolean isBooked;
-    private Location location;
+    private LocationPOJO location;
     private Double pricePerNight;
     private String facilities;
+    private String description;
     private Date date_start;
     private Date date_end;
+    private List<String> imageNameList;
 
 
-    private SmartLockDescriptionBundle(int id, String name, String address, Beacon beacon, boolean isMine, boolean isBooked, Location location, Double pricePerNight, String facilities, Date date_start, Date date_end) {
+    private SmartLockDescriptionBundle(int id, String name, String address, Beacon beacon, boolean isMine, boolean isBooked, LocationPOJO location, Double pricePerNight, String facilities, String description, Date date_start, Date date_end, List<String> imageNameList) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -30,8 +33,10 @@ public class SmartLockDescriptionBundle {
         this.location = location;
         this.pricePerNight = pricePerNight;
         this.facilities = facilities;
+        this.description = description;
         this.date_start = date_start;
         this.date_end = date_end;
+        this.imageNameList = imageNameList;
     }
 
     public static class Builder {
@@ -41,11 +46,13 @@ public class SmartLockDescriptionBundle {
         private Beacon beacon;
         private boolean isMine;
         private boolean isBooked;
-        private Location location;
+        private LocationPOJO location;
         private Double pricePerNight;
         private String facilities;
+        private String description;
         private Date date_start;
         private Date date_end;
+        private List<String> imageNameList;
 
         public Builder() {
         }
@@ -80,7 +87,7 @@ public class SmartLockDescriptionBundle {
             return this;
         }
 
-        public Builder location(final Location location) {
+        public Builder location(final LocationPOJO location) {
             this.location = location;
             return this;
         }
@@ -105,10 +112,28 @@ public class SmartLockDescriptionBundle {
             return this;
         }
 
+        public Builder description(final String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder imageNameList(final List<String> imageNameList){
+            this.imageNameList = imageNameList;
+            return this;
+        }
+
 
         public SmartLockDescriptionBundle build() {
-            return new SmartLockDescriptionBundle(id, name, address, beacon, isMine, isBooked, location, pricePerNight, facilities, date_start, date_end);
+            return new SmartLockDescriptionBundle(id, name, address, beacon, isMine, isBooked, location, pricePerNight, facilities, description, date_start, date_end, imageNameList);
         }
+    }
+
+    public List<String> getImageNameList() {
+        return imageNameList;
+    }
+
+    public void setImageNameList(List<String> imageNameList) {
+        this.imageNameList = imageNameList;
     }
 
     @Override
@@ -128,6 +153,30 @@ public class SmartLockDescriptionBundle {
         return other.getId() == this.getId();
     }
 
+    public boolean isMine() {
+        return isMine;
+    }
+
+    public void setMine(boolean mine) {
+        isMine = mine;
+    }
+
+    public boolean isBooked() {
+        return isBooked;
+    }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Date getDate_start() {
         return date_start;
     }
@@ -144,11 +193,11 @@ public class SmartLockDescriptionBundle {
         this.date_end = date_end;
     }
 
-    public Location getLocation() {
+    public LocationPOJO getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(LocationPOJO location) {
         this.location = location;
     }
 
