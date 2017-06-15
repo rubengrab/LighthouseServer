@@ -18,8 +18,8 @@ public class BookingRepository {
     public BookingRepository() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://localhost:3306/lighthouse";
-            connection = DriverManager.getConnection(url, "root", "root");
+            String url = "jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_7ef72774c1bedea";
+            connection = DriverManager.getConnection(url, "ba8b030fb31019", "8dac5c1e");
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
