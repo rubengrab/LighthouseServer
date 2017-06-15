@@ -29,7 +29,7 @@ public class ImageController {
             BufferedImage img = null;
             try {
                 System.out.println(imageName + ".jpg requested.");
-                File pathToFile = new File("\\app\\build\\resources\\main\\static\\" + imageName + ".jpg");
+                File pathToFile = new File("\\src\\main\\resources\\static\\" + imageName + ".jpg");
                 img = ImageIO.read(pathToFile);
             } catch (IOException ex) {
                 ex.printStackTrace();
