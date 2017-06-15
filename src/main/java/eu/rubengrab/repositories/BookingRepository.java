@@ -42,8 +42,8 @@ public class BookingRepository {
 
         List<Interval> bookingIntervals = new ArrayList<>();
 
-        String query = "SELECT lighthouse.user_house.date_start, lighthouse.user_house.date_end FROM lighthouse.user_house " +
-                "WHERE lighthouse.user_house.id_house = ?;";
+        String query = "SELECT user_house.date_start, user_house.date_end FROM user_house " +
+                "WHERE user_house.id_house = ?;";
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
 

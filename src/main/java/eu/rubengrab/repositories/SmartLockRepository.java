@@ -204,8 +204,8 @@ public class SmartLockRepository {
         SmartLockDescriptionBundle.Builder smartLockDescriptionBundleBuilder = new SmartLockDescriptionBundle.Builder();
 
 
-        String query = "SELECT h.id, h.address, h.name, h.price_per_night, h.facilities, h.gps_latitude, h.gps_longitude, h.beacon_major,h.beacon_major, h.beacon_uuid, uh.date_start, uh.date_end, uh.id_user, h.description FROM lighthouse.houses AS h\n" +
-                "LEFT JOIN lighthouse.user_house AS uh ON uh.id_house = h.id AND uh.id_user = ?  AND (DATE(uh.date_start) <= DATE(NOW()) AND DATE(uh.date_end) >= DATE(NOW()))\n" +
+        String query = "SELECT h.id, h.address, h.name, h.price_per_night, h.facilities, h.gps_latitude, h.gps_longitude, h.beacon_major,h.beacon_major, h.beacon_uuid, uh.date_start, uh.date_end, uh.id_user, h.description FROM houses AS h\n" +
+                "LEFT JOIN user_house AS uh ON uh.id_house = h.id AND uh.id_user = ?  AND (DATE(uh.date_start) <= DATE(NOW()) AND DATE(uh.date_end) >= DATE(NOW()))\n" +
                 "WHERE h.id = ?";
         try {
             PreparedStatement preparedStmt = connection.prepareStatement(query);
