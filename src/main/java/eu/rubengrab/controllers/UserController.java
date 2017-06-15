@@ -22,6 +22,7 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<User> login(@RequestBody User user) {
+        System.out.println("/login");
 
         User loggedInUser = getUserService().login(user);
 
@@ -34,6 +35,7 @@ public class UserController {
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     public ResponseEntity<Boolean> logout(@RequestBody User user) {
+        System.out.println("/logout");
         Boolean successfulLogout = getUserService().logout(user);
 
         if (successfulLogout) {
@@ -45,6 +47,7 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResponseEntity<User> saveChanges(@RequestBody User user) {
+        System.out.println("/update");
         User save = getUserService().save(user);
         return new ResponseEntity<User>(save, HttpStatus.OK);
     }
