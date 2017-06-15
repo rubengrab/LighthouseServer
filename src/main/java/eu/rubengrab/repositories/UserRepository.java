@@ -19,6 +19,7 @@ public class UserRepository {
             String url = "jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_7ef72774c1bedea";
             connection = DriverManager.getConnection(url, "ba8b030fb31019", "8dac5c1e");
         } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Eroare!!!");
             e.printStackTrace();
         }
     }
