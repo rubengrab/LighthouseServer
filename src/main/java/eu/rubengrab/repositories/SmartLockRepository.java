@@ -21,17 +21,30 @@ public class SmartLockRepository {
 
     private Connection connection = null;
 
-    public SmartLockRepository() {
+    private void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_7ef72774c1bedea";
             connection = DriverManager.getConnection(url, "ba8b030fb31019", "8dac5c1e");
         } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Eroare!!!");
             e.printStackTrace();
         }
     }
 
+    public SmartLockRepository() {
+    }
+
     public String getUnlockCode(User user, Long major, Long minor, String uuid) {
+        createConnection();
 
         String pepper = String.valueOf(Calendar.getInstance().get(Calendar.SECOND));
 
@@ -57,10 +70,13 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
         return "" + pepper;
     }
 
     public String getMacAddress(User user, Long major, Long minor, String uuid) {
+        createConnection();
+
         String query = "SELECT mac_address  FROM houses WHERE beacon_major LIKE ? AND beacon_minor LIKE ? AND beacon_uuid LIKE ?;";
 
         try {
@@ -81,10 +97,14 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return "";
     }
 
     public List<String> getImagesForHouse(int houseId) {
+        createConnection();
+
         List<String> images = new ArrayList<>();
 
         String query = "Select image_name from images " +
@@ -107,10 +127,13 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return images;
     }
 
     public List<Integer> getBookedHousesId() {
+        createConnection();
 
         List<Integer> ids = new ArrayList<>();
 
@@ -129,10 +152,13 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return ids;
     }
 
     public List<SmartLockDescriptionBundle> getAllDescriptions(User userForToken) {
+        createConnection();
 
         Set<SmartLockDescriptionBundle> smartLockDescriptionBundleSet = new HashSet<>(getActiveBookingsByUser(userForToken));
 
@@ -167,10 +193,14 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return new ArrayList<>(smartLockDescriptionBundleSet);
     }
 
     public SmartLockDescriptionBundle getDescription(User userForToken, String smartLockId) {
+        createConnection();
+
         SmartLockDescriptionBundle.Builder smartLockDescriptionBundleBuilder = new SmartLockDescriptionBundle.Builder();
 
 
@@ -226,10 +256,14 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return smartLockDescriptionBundleBuilder.build();
     }
 
     public void addBooking(int id_user, int house_id, long mFromDateTime, long mToDateTime) {
+        createConnection();
+
         SmartLockDescriptionBundle.Builder smartLockDescriptionBundleBuilder = new SmartLockDescriptionBundle.Builder();
 
         String query = "INSERT INTO user_house (id_user, id_house, date_start, date_end)"
@@ -248,9 +282,13 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
     }
 
     public List<SmartLockDescriptionBundle> getPastBookingByUser(User userForToken) {
+        createConnection();
+
         List<SmartLockDescriptionBundle> smartLockDescriptionBundleList = new ArrayList<>();
 
         List<Integer> activeBookingIds = getActiveBookingsByUser(userForToken).stream().map(SmartLockDescriptionBundle::getId).collect(Collectors.toList());
@@ -311,10 +349,14 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return smartLockDescriptionBundleList;
     }
 
     public List<SmartLockDescriptionBundle> getActiveBookingsByUser(User userForToken) {
+        createConnection();
+
         List<SmartLockDescriptionBundle> smartLockDescriptionBundleList = new ArrayList<>();
 
         String query = "SELECT h.id, h.address, h.name , h.beacon_major, h.beacon_minor, h.beacon_uuid, h.gps_latitude, h.gps_longitude, h.price_per_night, h.facilities, uh.date_start, uh.date_end, h.description " +
@@ -367,10 +409,14 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return smartLockDescriptionBundleList;
     }
 
     public List<SmartLockDescriptionBundle> getFutureBookingByUser(User userForToken) {
+        createConnection();
+
         List<SmartLockDescriptionBundle> smartLockDescriptionBundleList = new ArrayList<>();
 
         List<Integer> activeBookingIds = getActiveBookingsByUser(userForToken).stream().map(SmartLockDescriptionBundle::getId).collect(Collectors.toList());
@@ -432,6 +478,8 @@ public class SmartLockRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
+
         return smartLockDescriptionBundleList;
     }
 }

@@ -15,17 +15,30 @@ public class BookingRepository {
 
     private Connection connection = null;
 
-    public BookingRepository() {
+    private void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createConnection() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_7ef72774c1bedea";
             connection = DriverManager.getConnection(url, "ba8b030fb31019", "8dac5c1e");
         } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Eroare!!!");
             e.printStackTrace();
         }
     }
 
+    public BookingRepository() {
+    }
+
     public List<Interval> getBookingDatesForHouse(int smartLockDescriptionBundleId) {
+        createConnection();
 
         List<Interval> bookingIntervals = new ArrayList<>();
 
@@ -47,6 +60,7 @@ public class BookingRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
 
         return bookingIntervals;
     }

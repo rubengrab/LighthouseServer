@@ -14,18 +14,12 @@ public class UserRepository {
     private Connection connection;
 
     public UserRepository() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            String url = "jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_7ef72774c1bedea";
-            connection = DriverManager.getConnection(url, "ba8b030fb31019", "8dac5c1e");
-        } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Eroare!!!");
-            e.printStackTrace();
-        }
+//        createConnection();
     }
 
     public User getByUsername(String userName) {
         User user = new User();
+        createConnection();
 
         String query = "SELECT id, username, password, firstName, lastName, email, creditcard FROM users WHERE username LIKE ?;";
 
@@ -48,10 +42,31 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
         return user;
     }
 
+    private void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createConnection() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String url = "jdbc:mysql://eu-cdbr-west-01.cleardb.com:3306/heroku_7ef72774c1bedea";
+            connection = DriverManager.getConnection(url, "ba8b030fb31019", "8dac5c1e");
+        } catch (SQLException | ClassNotFoundException e) {
+            System.out.println("Eroare!!!");
+            e.printStackTrace();
+        }
+    }
+
     public User updateUser(User user) {
+        createConnection();
         String query = "UPDATE users SET firstName = ?, lastName = ?, email = ?, creditcard = ? WHERE id =?;";
 
         try {
@@ -67,6 +82,7 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        closeConnection();
         return user;
     }
 }
