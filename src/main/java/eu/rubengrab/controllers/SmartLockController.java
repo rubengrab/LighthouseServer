@@ -21,12 +21,16 @@ import java.util.List;
 @RequestMapping("/{userTokenUSERNAME}")
 public class SmartLockController {
 
+    private final SmartLockService smartLockService;
+    private final SessionService sessionService;
+    private final UserService userService;
+
     @Autowired
-    private SmartLockService smartLockService;
-    @Autowired
-    private SessionService sessionService;
-    @Autowired
-    private UserService userService;
+    public SmartLockController(SmartLockService smartLockService, SessionService sessionService, UserService userService) {
+        this.smartLockService = smartLockService;
+        this.sessionService = sessionService;
+        this.userService = userService;
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/smartLock/security/{major}/{minor}/{uuid}")
     SmartLockSecurityBundle getSmartLockSecurityBundle(@PathVariable String userTokenUSERNAME, @PathVariable Long major, @PathVariable Long minor, @PathVariable String uuid) {
@@ -73,23 +77,12 @@ public class SmartLockController {
         return userService;
     }
 
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
     private SessionService getSessionService() {
         return sessionService;
-    }
-
-    public void setSessionService(SessionService sessionService) {
-        this.sessionService = sessionService;
     }
 
     private SmartLockService getSmartLockService() {
         return smartLockService;
     }
 
-    public void setSmartLockService(SmartLockService smartLockService) {
-        this.smartLockService = smartLockService;
-    }
 }
