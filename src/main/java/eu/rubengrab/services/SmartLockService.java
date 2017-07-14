@@ -1,7 +1,7 @@
 package eu.rubengrab.services;
 
-import eu.rubengrab.model.SmartLockSecurityBundle;
 import eu.rubengrab.model.SmartLockDescriptionBundle;
+import eu.rubengrab.model.SmartLockSecurityBundle;
 import eu.rubengrab.model.User;
 import eu.rubengrab.repositories.SmartLockRepository;
 import eu.rubengrab.utils.Encrypter;
@@ -28,12 +28,15 @@ public class SmartLockService {
 
     public SmartLockSecurityBundle getEncryptedUnlockKey(User user, Long major, Long minor, String uuid) {
 
-        String unlockCode = smartLockRepository.getUnlockCode(user,major, minor, uuid);
-        String pepper = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        String[] security = smartLockRepository.getUnlockCode(user, major, minor, uuid);
+        String unlockCode = security[0];
+        String separatror = security[1];
+        String pepper1 = String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        String pepper2 = String.valueOf(Calendar.getInstance().get(Calendar.MINUTE));
 
-        String plainText = unlockCode + pepper;
+        String plainText = unlockCode + separatror + pepper1 + separatror + pepper2;
         String cypherText = "";
-        String address = smartLockRepository.getMacAddress(user,major, minor, uuid);
+        String address = smartLockRepository.getMacAddress(user, major, minor, uuid);
         try {
             cypherText = Encrypter.bytesToHex(Encrypter.encrypt(plainText));
         } catch (IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | InvalidKeyException | NoSuchAlgorithmException e) {

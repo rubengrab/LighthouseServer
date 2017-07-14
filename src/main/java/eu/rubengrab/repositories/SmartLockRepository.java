@@ -31,10 +31,7 @@ public class SmartLockRepository {
         }
     }
 
-    public String getUnlockCode(User user, Long major, Long minor, String uuid) {
-
-        String pepper = String.valueOf(Calendar.getInstance().get(Calendar.SECOND));
-
+    public String[] getUnlockCode(User user, Long major, Long minor, String uuid) {
 
         String query = "SELECT beacon_password, beacon_separator  FROM houses WHERE beacon_major LIKE ? AND beacon_minor LIKE ? AND beacon_uuid LIKE ?;";
 
@@ -52,12 +49,13 @@ public class SmartLockRepository {
             String beacon_password = resultSet.getString(1);
             String separator = resultSet.getString(2);
 
-            return beacon_password + separator + pepper;
+            String security[]={beacon_password,separator};//declaration, instantiation and initialization
+            return security;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return "" + pepper;
+        return new String[2];
     }
 
     public String getMacAddress(User user, Long major, Long minor, String uuid) {

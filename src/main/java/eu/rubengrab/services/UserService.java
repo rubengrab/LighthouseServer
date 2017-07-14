@@ -18,7 +18,7 @@ public class UserService {
 
     public User login(User user) {
         User userByUsername = userRepository.getByUsername(user.getUsername());
-        if (userByUsername != null && userByUsername.getPassword().equals(user.getPassword())) {
+        if (userByUsername != null && user.getPassword().equals(userByUsername.getPassword())) {
 //            String generatedToken = sessionService.generateTokenForUser(user);
             userByUsername.setToken(userByUsername.getUsername());
             return userByUsername;

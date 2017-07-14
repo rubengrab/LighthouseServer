@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
+
 /**
  * Created by Ruben on 19.05.2017.
  */
@@ -29,8 +31,11 @@ public class BookingController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/checkBooking/{smartLockDescriptionBundleId}/{mFromDateTime}/{mToDateTime}")
     Boolean checkAvailability(@PathVariable String userTokenUSERNAME, @PathVariable int smartLockDescriptionBundleId, @PathVariable long mFromDateTime, @PathVariable long mToDateTime) {
+        System.out.print(new Date(mFromDateTime) +" to " + new Date(mToDateTime) + " availability requested: ");
         User userForToken = getUserService().getUserByUsername(userTokenUSERNAME);
-        return getBookingService().checkAvailability(userForToken, smartLockDescriptionBundleId, mFromDateTime, mToDateTime);
+        Boolean isAvailable = getBookingService().checkAvailability(userForToken, smartLockDescriptionBundleId, mFromDateTime, mToDateTime);
+        System.out.println(isAvailable);
+        return isAvailable;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/bookNow/{smartLockDescriptionBundleId}/{mFromDateTime}/{mToDateTime}")

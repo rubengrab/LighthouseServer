@@ -64,11 +64,6 @@ public class SmartLockController {
         return getSmartLockService().getFutureBookingByUser(userForToken);
     }
 
-
-
-
-
-
     private UserService getUserService() {
         return userService;
     }
